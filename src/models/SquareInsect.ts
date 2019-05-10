@@ -1,18 +1,17 @@
 import Two from 'two.js';
+import { Food } from '@/models/Food';
+import {SceneObject} from '@/models/SceneObject';
 
 const DIRECTION_CHANGE = 0.02;
 const POSITION_CHANGE = 0.5;
 
-export interface SceneObject {
-	update(): void;
-	translation: Two.Vector;
-}
 
-export class SquareInsect extends Two.Group implements SceneObject {
+
+export class SquareInsect extends SceneObject {
 	health: number = 20;
 	direction = Math.random() * 2 * Math.PI;
 	constructor(two: Two, objects: SceneObject[], x: number, y: number) {
-		super();
+		super(two, objects);
 		const body = two.makeRoundedRectangle(0, 0, 30, 30, 5);
 		const eye = two.makeCircle(8, 8, 5);
 		this.add(body, eye);
@@ -29,5 +28,8 @@ export class SquareInsect extends Two.Group implements SceneObject {
 			POSITION_CHANGE * Math.sin(this.direction)
 		);
 		this.translation.addSelf(movement);
+	}
+	collision(other: SceneObject): void {
+		if (other instanceof Food) this.health += 10;
 	}
 }
