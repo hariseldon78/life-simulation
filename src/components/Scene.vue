@@ -1,10 +1,11 @@
 <template>
     <div>
         <div class="canvas" ref="canvas"></div>
+        <button @click="add">Add</button>
         <div v-for="insect in insects">
             <p>
-                insect health: {{ insect.health }} translation: {{ insect.translation.x }},{{
-                    insect.translation.y
+                insect health: {{ Math.floor(insect.health) }} translation: {{ Math.floor(insect.translation.x) }},{{
+                    Math.floor(insect.translation.y)
                 }}
             </p>
         </div>
@@ -26,7 +27,7 @@ function rollup(v: number, max: number): number {
     return v;
 }
 @Component
-export default class HelloWorld extends Vue {
+export default class Scene extends Vue {
     insects: SquareInsect[] = [];
     two: Two = new Two({
         fullscreen: false,
@@ -53,6 +54,16 @@ export default class HelloWorld extends Vue {
                 insect.translation.y = rollup(insect.translation.y, this.two.height);
             });
         });
+    }
+    add() {
+		this.insects.push(
+			new SquareInsect(
+				this.two,
+				this.insects,
+				Math.random() * this.two.width,
+				Math.random() * this.two.height
+			)
+		);
     }
 }
 </script>

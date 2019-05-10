@@ -1,7 +1,7 @@
 import Two from 'two.js';
 
 const DIRECTION_CHANGE = 0.02;
-const POSITION_CHANGE = 0.2;
+const POSITION_CHANGE = 0.5;
 export class SquareInsect extends Two.Group {
     health: number = 20;
     direction = Math.random() * 2 * Math.PI;
