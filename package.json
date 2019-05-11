@@ -35,7 +35,6 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "@vue/prettier",
       "@vue/typescript"
     ],
     "rules": {},

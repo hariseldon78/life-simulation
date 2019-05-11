@@ -6,20 +6,22 @@ const DIRECTION_CHANGE = 0.02;
 const POSITION_CHANGE = 0.5;
 
 
+const START_HEALTH=300;
 
 export class SquareInsect extends SceneObject {
-	health: number = 20;
 	direction = Math.random() * 2 * Math.PI;
 	constructor(two: Two, objects: SceneObject[], x: number, y: number) {
-		super(two, objects);
-		const body = two.makeRoundedRectangle(0, 0, 30, 30, 5);
-		const eye = two.makeCircle(8, 8, 5);
+		super(two, objects,START_HEALTH);
+		const sqrt=Math.sqrt(this.health);
+		const body = two.makeRoundedRectangle(0, 0,sqrt,  sqrt, sqrt/5);
+		const eye = two.makeCircle(sqrt/5, sqrt/5, sqrt/5);
 		this.add(body, eye);
 		two.add(this);
 		this.translation.set(x, y);
 	}
 	update() {
-		this.scale = Math.abs(Math.sin(Date.now() / 1000)) / 2 + 0.5;
+		this.scale=Math.sqrt(this.health)/Math.sqrt(START_HEALTH);
+
 		const deltaDirection = Math.random() * 2 * Math.PI * DIRECTION_CHANGE;
 		this.direction += deltaDirection - Math.PI * DIRECTION_CHANGE;
 		this.rotation = this.direction - Math.PI / 4;
@@ -30,6 +32,9 @@ export class SquareInsect extends SceneObject {
 		this.translation.addSelf(movement);
 	}
 	collision(other: SceneObject): void {
-		if (other instanceof Food) this.health += 10;
+		if (other instanceof Food) {
+			this.health += 1;
+			other.health -=1;
+		}
 	}
 }

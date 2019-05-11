@@ -3,20 +3,22 @@
 		<div class="canvas" ref="canvas"></div>
 		<button @click="addInsect">Insect</button>
 		<button @click="addFood">Food</button>
-		<div v-for="(insect,index) in insects">
-			<span :key="index">insect health: {{ Math.floor(insect.health) }}</span>
+		<div>
+			<span v-for="(insect, index) in insects" :key="index">
+				insect health: {{ Math.floor(insect.health) }}
+			</span>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-	import {Component, Vue} from 'vue-property-decorator';
-	import Two from 'two.js';
-	import {SquareInsect} from '@/models/SquareInsect';
-	import {Food} from '@/models/Food';
-	import {SceneObject} from '@/models/SceneObject';
+import { Component, Vue } from 'vue-property-decorator';
+import Two from 'two.js';
+import { SquareInsect } from '@/models/SquareInsect';
+import { Food } from '@/models/Food';
+import { SceneObject } from '@/models/SceneObject';
 
-	function rollup(v: number, max: number): number {
+function rollup(v: number, max: number): number {
 	while (v > max) {
 		v -= max;
 	}
@@ -44,7 +46,10 @@ export default class Scene extends Vue {
 		autostart: true,
 	});
 	mounted() {
-		this.two.appendTo(this.$refs.canvas as HTMLElement);
+		let canvas = this.$refs.canvas as HTMLElement;
+		this.two.appendTo(canvas);
+		this.two.width=canvas.offsetWidth;
+		this.two.height=canvas.offsetHeight;
 		this.start();
 	}
 	get insects() {
@@ -52,13 +57,14 @@ export default class Scene extends Vue {
 	}
 	start() {
 		this.two.bind('update', () => {
-			this.objects.forEach(insect => {
-				insect.update();
-				insect.translation.x = rollup(insect.translation.x, this.two.width);
-				insect.translation.y = rollup(insect.translation.y, this.two.height);
+			this.objects.forEach(obj => {
+				obj.update();
+				obj.translation.x = rollup(obj.translation.x, this.two.width);
+				obj.translation.y = rollup(obj.translation.y, this.two.height);
 			});
 			this.computeCollisions();
 		});
+		setInterval(() => this.addFood(), 2000);
 	}
 	addInsect() {
 		this.objects.push(
@@ -81,6 +87,7 @@ export default class Scene extends Vue {
 		);
 	}
 	computeCollisions() {
+		this.objects = this.objects.filter(obj => obj.health > 0);
 		const boxes = this.objects.map(o => o.getBoundingClientRect());
 		for (let i = 0; i < boxes.length; i++) {
 			const boxa = boxes[i];
