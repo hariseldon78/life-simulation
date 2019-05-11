@@ -8,6 +8,7 @@ export class SceneObject extends Two.Group {
 	two: Two;
 	addObject: AddObjectClosure;
 	movable=false;
+	private oldBoundingBox: Two.BoundingClientRect|null=null;
 	constructor(two: Two, addObject:AddObjectClosure,health:number) {
 		super();
 		this.two=two;
@@ -17,4 +18,12 @@ export class SceneObject extends Two.Group {
 	}
 	update(): void {}
 	collision(other: SceneObject): void {}
+	resetBoundingBox(){
+		this.oldBoundingBox=null;
+	}
+	boundingBox():Two.BoundingClientRect{
+		if (!this.oldBoundingBox)
+			this.oldBoundingBox=this.getBoundingClientRect();
+		return this.oldBoundingBox;
+	}
 }

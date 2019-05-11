@@ -2,7 +2,11 @@
 	<div>
 		<div class="canvas" ref="canvas"></div>
 		<button @click="addInsect">Insect</button>
-		<button @click="addFood">Food</button>
+        <p>Food:
+            <button @click="foodTimer-=20;resetFoodGenerator()">+</button>
+            <button @click="foodTimer+=20;resetFoodGenerator()">-</button>
+            {{foodTimer}}
+        </p>
 		<div>
 			<span v-for="(insect, index) in insects" :key="index">
 				insect health: {{ Math.floor(insect.health) }} -
@@ -46,7 +50,10 @@ export default class Scene extends Vue {
 		fullscreen: false,
 		autostart: true,
 	});
+	foodTimer=500;
+
 	children: SceneObject[]=[];
+	foodGenerator: number=0;
 	mounted() {
 		let canvas = this.$refs.canvas as HTMLElement;
 		this.two.appendTo(canvas);
@@ -65,10 +72,14 @@ export default class Scene extends Vue {
 				obj.translation.y = rollup(obj.translation.y, this.two.height);
 			});
 			this.computeCollisions();
-			this.children.forEach(c=>this.objects.push(c));
-			this.children=[];
+			this.children.forEach(c => this.objects.push(c));
+			this.children = [];
 		});
-		setInterval(() => this.addFood(), 300);
+		this.resetFoodGenerator()
+	}
+    resetFoodGenerator(){
+		clearInterval(this.foodGenerator);
+		this.foodGenerator=setInterval(() => this.addFood(), this.foodTimer);
 	}
 	addInsect() {
 		this.objects.push(
@@ -95,7 +106,7 @@ export default class Scene extends Vue {
 		const part=_.partition(this.objects,obj=>obj.health>0);
 		this.objects = part[0];
 		part[1].forEach(obj=>this.two.remove(obj));
-		const boxes = this.objects.map(o => o.getBoundingClientRect());
+		const boxes = this.objects.map(o => o.boundingBox());
 		for (let i = 0; i < boxes.length; i++) {
 			if (!this.objects[i].movable) continue;
 			const boxa = boxes[i];

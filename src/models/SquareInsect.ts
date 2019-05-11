@@ -51,6 +51,7 @@ export class SquareInsect extends SceneObject {
 			this.genes[4] * Math.sin(this.direction)
 		);
 		this.translation.addSelf(movement);
+		this.resetBoundingBox();
 		this.procreate();
 	}
 	collision(other: SceneObject): void {
