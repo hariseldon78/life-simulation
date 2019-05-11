@@ -45,11 +45,12 @@ export default class Scene extends Vue {
 		fullscreen: false,
 		autostart: true,
 	});
+	children: SceneObject[]=[];
 	mounted() {
 		let canvas = this.$refs.canvas as HTMLElement;
 		this.two.appendTo(canvas);
-		this.two.width=canvas.offsetWidth;
-		this.two.height=canvas.offsetHeight;
+		this.two.width = canvas.offsetWidth;
+		this.two.height = canvas.offsetHeight;
 		this.start();
 	}
 	get insects() {
@@ -63,14 +64,16 @@ export default class Scene extends Vue {
 				obj.translation.y = rollup(obj.translation.y, this.two.height);
 			});
 			this.computeCollisions();
+			this.children.forEach(c=>this.objects.push(c));
+			this.children=[];
 		});
-		setInterval(() => this.addFood(), 2000);
+		setInterval(() => this.addFood(), 300);
 	}
 	addInsect() {
 		this.objects.push(
 			new SquareInsect(
 				this.two,
-				this.objects,
+				obj => this.children.push(obj),
 				Math.random() * this.two.width,
 				Math.random() * this.two.height
 			)
@@ -80,10 +83,10 @@ export default class Scene extends Vue {
 		this.objects.push(
 			new Food(
 				this.two,
-				this.objects,
+				obj => this.objects.push(obj),
 				Math.random() * this.two.width,
 				Math.random() * this.two.height,
-					Math.random()*100
+				Math.random() * 100
 			)
 		);
 	}

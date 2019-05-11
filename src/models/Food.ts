@@ -1,9 +1,9 @@
 import Two from 'two.js';
-import { SceneObject } from '@/models/SceneObject';
+import {AddObjectClosure, SceneObject} from '@/models/SceneObject';
 
 export class Food extends SceneObject {
-	constructor(two: Two, objects: SceneObject[], x: number, y: number,health:number=20) {
-		super(two,objects,health);
+	constructor(two: Two, addObject:AddObjectClosure, x: number, y: number,health:number=20) {
+		super(two,addObject,health);
 		const piece = two.makeCircle(0, 0, this.health/10);
 		piece.fill='brown';
 		piece.linewidth=0;
