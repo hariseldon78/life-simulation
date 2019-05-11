@@ -43,6 +43,7 @@ function overlap(a: Two.BoundingClientRect, b: Two.BoundingClientRect): boolean 
 	const yOverlap = between(b.top, a.top, b.bottom) || between(b.top, a.bottom, b.bottom);
 	return xOverlap && yOverlap;
 }
+
 @Component
 export default class Scene extends Vue {
 	objects: SceneObject[] = [];
@@ -106,6 +107,7 @@ export default class Scene extends Vue {
 		const part=_.partition(this.objects,obj=>obj.health>0);
 		this.objects = part[0];
 		part[1].forEach(obj=>this.two.remove(obj));
+
 		const boxes = this.objects.map(o => o.boundingBox());
 		for (let i = 0; i < boxes.length; i++) {
 			if (!this.objects[i].movable) continue;
