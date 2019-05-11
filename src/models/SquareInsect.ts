@@ -14,7 +14,9 @@ export class SquareInsect extends SceneObject {
 		super(two, objects,START_HEALTH);
 		const sqrt=Math.sqrt(this.health);
 		const body = two.makeRoundedRectangle(0, 0,sqrt,  sqrt, sqrt/5);
+		body.fill='yellow';
 		const eye = two.makeCircle(sqrt/5, sqrt/5, sqrt/5);
+		eye.fill='cyan';
 		this.add(body, eye);
 		two.add(this);
 		this.translation.set(x, y);

@@ -5,6 +5,8 @@ export class Food extends SceneObject {
 	constructor(two: Two, objects: SceneObject[], x: number, y: number,health:number=20) {
 		super(two,objects,health);
 		const piece = two.makeCircle(0, 0, this.health/10);
+		piece.fill='brown';
+		piece.linewidth=0;
 		this.add(piece);
 		two.add(this);
 		this.translation.set(x, y);
