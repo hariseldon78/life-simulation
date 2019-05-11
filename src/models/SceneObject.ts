@@ -7,6 +7,7 @@ export class SceneObject extends Two.Group {
 	startHealth:number;
 	two: Two;
 	addObject: AddObjectClosure;
+	movable=false;
 	constructor(two: Two, addObject:AddObjectClosure,health:number) {
 		super();
 		this.two=two;

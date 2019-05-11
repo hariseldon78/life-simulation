@@ -97,6 +97,7 @@ export default class Scene extends Vue {
 		part[1].forEach(obj=>this.two.remove(obj));
 		const boxes = this.objects.map(o => o.getBoundingClientRect());
 		for (let i = 0; i < boxes.length; i++) {
+			if (!this.objects[i].movable) continue;
 			const boxa = boxes[i];
 			for (let j = 0; j < boxes.length; j++) {
 				const boxb = boxes[j];
