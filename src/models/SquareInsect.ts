@@ -21,7 +21,7 @@ export class SquareInsect extends SceneObject {
 	}
 	update() {
 		this.scale=Math.sqrt(this.health)/Math.sqrt(START_HEALTH);
-
+		this.health-=0.1;
 		const deltaDirection = Math.random() * 2 * Math.PI * DIRECTION_CHANGE;
 		this.direction += deltaDirection - Math.PI * DIRECTION_CHANGE;
 		this.rotation = this.direction - Math.PI / 4;

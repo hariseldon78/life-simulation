@@ -5,7 +5,7 @@
 		<button @click="addFood">Food</button>
 		<div>
 			<span v-for="(insect, index) in insects" :key="index">
-				insect health: {{ Math.floor(insect.health) }}
+				insect health: {{ Math.floor(insect.health) }} -
 			</span>
 		</div>
 	</div>
@@ -82,7 +82,8 @@ export default class Scene extends Vue {
 				this.two,
 				this.objects,
 				Math.random() * this.two.width,
-				Math.random() * this.two.height
+				Math.random() * this.two.height,
+					Math.random()*100
 			)
 		);
 	}
