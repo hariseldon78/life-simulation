@@ -17,6 +17,7 @@ import Two from 'two.js';
 import { SquareInsect } from '@/models/SquareInsect';
 import { Food } from '@/models/Food';
 import { SceneObject } from '@/models/SceneObject';
+import * as _ from 'lodash';
 
 function rollup(v: number, max: number): number {
 	while (v > max) {
@@ -91,7 +92,9 @@ export default class Scene extends Vue {
 		);
 	}
 	computeCollisions() {
-		this.objects = this.objects.filter(obj => obj.health > 0);
+		const part=_.partition(this.objects,obj=>obj.health>0);
+		this.objects = part[0];
+		part[1].forEach(obj=>this.two.remove(obj));
 		const boxes = this.objects.map(o => o.getBoundingClientRect());
 		for (let i = 0; i < boxes.length; i++) {
 			const boxa = boxes[i];

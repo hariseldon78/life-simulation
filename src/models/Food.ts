@@ -5,7 +5,7 @@ export class Food extends SceneObject {
 	constructor(two: Two, addObject:AddObjectClosure, x: number, y: number,health:number=20) {
 		super(two,addObject,health);
 		const piece = two.makeCircle(0, 0, this.health/10);
-		piece.fill='brown';
+		piece.fill='orange';
 		piece.linewidth=0;
 		this.add(piece);
 		two.add(this);
