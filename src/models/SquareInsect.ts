@@ -34,7 +34,11 @@ export class SquareInsect extends SceneObject {
 		const sqrt = Math.sqrt(this.health);
 		const body = two.makeRoundedRectangle(0, 0, sqrt, sqrt, sqrt / 5);
 		body.fill = `rgb(${this.genes[0] * 255},${this.genes[1] * 255},${this.genes[2] * 255})`;
-		const eye = two.makeCircle(sqrt*this.genes[6] / 5, sqrt*this.genes[7] / 5, sqrt*this.genes[5]*2 / 5);
+		const eye = two.makeCircle(
+			(sqrt * this.genes[6]) / 5,
+			(sqrt * this.genes[7]) / 5,
+			(sqrt * this.genes[5] * 2) / 5
+		);
 		eye.fill = `rgb(${this.genes[3] * 255},${this.genes[4] * 255},${this.genes[5] * 255})`;
 		this.add(body, eye);
 		two.add(this);
@@ -42,9 +46,15 @@ export class SquareInsect extends SceneObject {
 	}
 	update() {
 		this.scale = Math.sqrt(this.health) / Math.sqrt(this.startHealth);
-		this.health -= this.genes[2]/10+this.genes[3]/10+this.genes[4];
-		const deltaDirection = Math.random() * 2 * Math.PI * this.genes[2]/10;
-		this.direction += deltaDirection - Math.PI * this.genes[3]/10;
+		this.health -= this.genes[4];
+		if (Math.random() > this.genes[8]) {
+			this.direction = 2 * Math.PI * Math.random();
+			this.health -= this.genes[8];
+		} else {
+			const deltaDirection = (Math.random() * 2 * Math.PI * this.genes[2]) / 10;
+			this.direction += deltaDirection - (Math.PI * this.genes[3]) / 10;
+			this.health -= this.genes[2] / 10 + this.genes[3] / 10;
+		}
 		this.rotation = this.direction - Math.PI / 4;
 		const movement = new Two.Vector(
 			this.genes[4] * Math.cos(this.direction),
